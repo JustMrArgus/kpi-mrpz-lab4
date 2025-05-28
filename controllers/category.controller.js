@@ -1,5 +1,3 @@
-category.controller.js
-
 const Category = require("../models/category.model");
 const Task = require("../models/task.model");
 
