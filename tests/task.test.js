@@ -175,4 +175,34 @@ describe("Task API: /api/tasks", () => {
       expect(res.statusCode).toBe(404);
     });
   });
+
+  describe("Admin Routes", () => {
+    it("should allow admin to get all tasks from all users", async () => {
+      await request(app)
+        .post("/api/tasks")
+        .set("Authorization", `Bearer ${userToken}`)
+        .send({ title: "User Task for Admin Test" });
+
+      await request(app)
+        .post("/api/tasks")
+        .set("Authorization", `Bearer ${adminToken}`)
+        .send({ title: "Admin Task" });
+
+      const res = await request(app)
+        .get("/api/tasks/admin/all")
+        .set("Authorization", `Bearer ${adminToken}`);
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body.length).toBeGreaterThanOrEqual(2);
+    });
+
+    it("should prevent a regular user from accessing admin routes", async () => {
+      const res = await request(app)
+        .get("/api/tasks/admin/all")
+        .set("Authorization", `Bearer ${userToken}`);
+
+      expect(res.statusCode).toBe(403);
+      expect(res.body.message).toBe("Access forbidden");
+    });
+  });
 });
