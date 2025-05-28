@@ -9,6 +9,10 @@ A robust RESTful API for comprehensive management of tasks, categories, and user
 
 ## Features
 
+### Design Document
+
+[LINK](https://docs.google.com/document/d/1r5xrrpwsCMhqZkDyWCGo4-a4P_WJI_dTbonNYhnqNJo/edit?tab=t.0)
+
 ### User Management
 
 - Secure user registration and login with JWT authentication
