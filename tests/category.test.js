@@ -84,4 +84,13 @@ describe("Category API: /api/categories", () => {
       .set("Authorization", `Bearer ${userToken}`);
     expect(getRes.body.length).toBe(1);
   });
+
+  it("should not create a category with a duplicate name for the same user", async () => {
+    const res = await request(app)
+      .post("/api/categories")
+      .set("Authorization", `Bearer ${userToken}`)
+      .send({ name: "Personal" });
+
+    expect(res.statusCode).toBe(409);
+  });
 });
