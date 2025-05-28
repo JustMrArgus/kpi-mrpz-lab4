@@ -7,6 +7,25 @@ A robust RESTful API for comprehensive management of tasks, categories, and user
 - Oleksandr Rodina (Олександр Родіна) IM-33
 - Kyryl Kozarezov (Кирил Козарезов) IM-33
 
+## Code Reviews
+
+Since the project has many pull requests with code reviews but no comments, we decided to provide you with links to PRs that do have suggestions and change requests.
+
+[LINK](https://github.com/JustMrArgus/kpi-mrpz-lab4/pull/1) - Oleksandr
+
+[LINK](https://github.com/JustMrArgus/kpi-mrpz-lab4/pull/6) - Oleksandr
+
+[LINK](https://github.com/JustMrArgus/kpi-mrpz-lab4/pull/9) - Oleksandr
+
+[LINK](https://github.com/JustMrArgus/kpi-mrpz-lab4/pull/8) - Kyryl
+
+[LINK](https://github.com/JustMrArgus/kpi-mrpz-lab4/pull/17) - Kyryl
+
+[LINK](https://github.com/JustMrArgus/kpi-mrpz-lab4/pull/24) - Kyryl
+
+If you look at the other pull requests, you’ll notice that many of them were reviewed, but in most cases, they were approved instantly.
+The closed pull requests are either our mistakes or early attempts when we were just getting familiar with this GitHub feature =)
+
 ## Features
 
 ### Design Document
