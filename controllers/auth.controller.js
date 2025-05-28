@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SEKRET, { expiresIn: "7d" }); // ❌ помилка в назві змінної середовища
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
 exports.register = async (req, res) => {
@@ -38,7 +38,7 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
