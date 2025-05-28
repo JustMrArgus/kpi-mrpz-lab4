@@ -1,32 +1,3 @@
-const request = require("supertest");
-const app = require("../app");
-const mongoose = require("mongoose");
-const User = require("../models/user.model");
-const Category = require("../models/category.model");
-
-let userToken;
-let userId;
-let categoryId;
-
-beforeAll(async () => {
-  await mongoose.connect(process.env.MONGO_URI);
-  await User.deleteMany({});
-  await Category.deleteMany({});
-
-  const userRes = await request(app).post("/api/auth/register").send({
-    username: "catuser",
-    email: "cat@test.com",
-    password: "password123",
-  });
-  userToken = userRes.body.token;
-  userId = userRes.body.user.id;
-});
-
-afterAll(async () => {
-  await mongoose.connection.dropDatabase();
-  await mongoose.connection.close();
-});
-
 describe("Category API: /api/categories", () => {
   it("should fail to create category if not authenticated", async () => {
     const res = await request(app)
@@ -46,6 +17,15 @@ describe("Category API: /api/categories", () => {
     expect(res.body.name).toBe("Personal");
     expect(res.body.user).toBe(userId);
     categoryId = res.body._id;
+  });
+
+  it("should not create a category with a duplicate name for the same user", async () => {
+    const res = await request(app)
+      .post("/api/categories")
+      .set("Authorization", `Bearer ${userToken}`)
+      .send({ name: "Personal" });
+
+    expect(res.statusCode).toBe(409);
   });
 
   it("should get all categories for the user", async () => {
@@ -83,14 +63,5 @@ describe("Category API: /api/categories", () => {
       .get("/api/categories")
       .set("Authorization", `Bearer ${userToken}`);
     expect(getRes.body.length).toBe(1);
-  });
-
-  it("should not create a category with a duplicate name for the same user", async () => {
-    const res = await request(app)
-      .post("/api/categories")
-      .set("Authorization", `Bearer ${userToken}`)
-      .send({ name: "Personal" });
-
-    expect(res.statusCode).toBe(409);
   });
 });
