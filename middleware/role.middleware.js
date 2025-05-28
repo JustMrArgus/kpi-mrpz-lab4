@@ -1,6 +1,6 @@
 const permit = (...allowedRoles) => {
   return (req, res, next) => {
-    if (req.user) {
+    if (req.user && allowedRoles.includes(req.user.role)) {
       next();
     } else {
       console.warn(
