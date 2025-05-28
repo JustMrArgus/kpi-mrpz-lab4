@@ -4,7 +4,7 @@ const taskSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: true, //sadksdkasdksd
+      required: [true, "Title is required"],
       minlength: 3,
       trim: true,
     },
@@ -20,7 +20,7 @@ const taskSchema = new mongoose.Schema(
     priority: {
       type: String,
       enum: ["low", "medium", "high"],
-      default: "mediu", //sasadadadadada
+      default: "medium",
     },
     dueDate: {
       type: Date,
