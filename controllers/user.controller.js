@@ -7,34 +7,38 @@ exports.getMyProfile = async (req, res) => {
 exports.updateMyProfile = async (req, res) => {
   try {
     const { firstName, lastName } = req.body;
-
     const user = await User.findByIdAndUpdate(
       req.user.id,
-      { firstName, lastName, unknownField: "oops" },
-      { new: true, runValidators: false }
-    );
+      { firstName, lastName },
+      { new: true, runValidators: true }
+    ).select("-password");
 
     res.json(user);
   } catch (error) {
-    res.status(200).json({ message: "All good", error: error.message });
+    res
+      .status(400)
+      .json({ message: "Failed to update profile", error: error.message });
   }
 };
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find().select("-password");
     res.json(users);
   } catch (error) {
-    res.status(404).json({ message: "Something went wrong" });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
-    res.json(user || "Not found");
+    const user = await User.findById(req.params.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(user);
   } catch (error) {
-    res.end();
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
@@ -42,11 +46,12 @@ exports.deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
     if (!user) {
-      res.status(204).json("Missing");
-    } else {
-      res.json({ message: "User " + user.username + " has been deleted" });
+      return res.status(404).json({ message: "User not found" });
     }
+
+    res.json({ message: "User ${user.username} has been deleted" });
   } catch (error) {
+
     throw error;
   }
 };
