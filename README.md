@@ -102,6 +102,12 @@ MONGO_URI=mongodb://localhost:27017/taskmanager
 JWT_SECRET=your_strong_secret_key_here
 ```
 
+To generate your jwt you can use:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+```
+
 ### Running the Application
 
 Start MongoDB server (in a separate terminal):
