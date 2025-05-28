@@ -71,5 +71,20 @@ describe("Auth API: /api/auth", () => {
       expect(res.statusCode).toBe(200);
       expect(res.body).toHaveProperty("token");
     });
+
+    it("should fail to login with wrong password", async () => {
+      const res = await request(app)
+        .post("/api/auth/login")
+        .send({ email: newUser.email, password: "wrongpassword" });
+      expect(res.statusCode).toBe(401);
+      expect(res.body.message).toBe("Invalid email or password");
+    });
+
+    it("should fail to login with a non-existent email", async () => {
+      const res = await request(app)
+        .post("/api/auth/login")
+        .send({ email: "nonexistent@example.com", password: "password123" });
+      expect(res.statusCode).toBe(401);
+    });
   });
 });
